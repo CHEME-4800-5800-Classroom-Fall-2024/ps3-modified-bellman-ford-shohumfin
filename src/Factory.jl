@@ -85,6 +85,7 @@ function build(model::Type{T}, edgemodels::Dict{Int64, MyGraphEdgeModel}) where 
     graphmodel.edgesinverse = edgesinverse;
     graphmodel.children = children;
     graphmodel.A = A;
+   #  will add stuff here
 
     # return -
     return graphmodel;
