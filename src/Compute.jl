@@ -14,6 +14,11 @@ function _children(edges::Dict{Tuple{Int, Int}, Tuple{Float64, Float64, Float64}
     return childrenset;
 end
 
+# ADD DESCRIPTOR
+function children(graph::T, node::MyGraphNodeModel)::Set{Int64} where T <: MyAbstractGraphModel
+    return graph.children[node.id];
+end
+
 function _convert(graphmodel::T) where T <: MyAbstractGraphModel
 
     # initialize -

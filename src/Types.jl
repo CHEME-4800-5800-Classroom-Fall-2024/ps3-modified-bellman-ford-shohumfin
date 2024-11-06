@@ -13,13 +13,13 @@ The struct represents a node in a graph model.
 - `capacity::Union{Nothing, Tuple{Int64, Int64}}`: the maximum in-degree and out-degree of the node.
 """
 mutable struct MyGraphNodeModel <: MyAbstractGraphNodeModel
-   
   # data -
   id::Int64
   capacity::Union{Nothing, Tuple{Int64, Int64}}; # node capacity {MaxInDegree, MaxOutDegree}
  
   # constructor -
-  MyGraphNodeModel(id::Int64, capacity::Union{Nothing, Int64}) = new(id, capacity);
+  # MyGraphNodeModel(id::Int64, capacity::Union{Nothing, Tuple{Int64, Int64}}) = new(id, capacity);
+  MyGraphNodeModel() = new();
 end
  
 """

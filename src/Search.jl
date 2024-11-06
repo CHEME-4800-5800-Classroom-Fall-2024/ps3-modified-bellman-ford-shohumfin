@@ -74,6 +74,7 @@ function _search(graph::T, start::MyGraphNodeModel, algorithm::BellmanFordAlgori
         distances[node.id] = Inf;
         previous[node.id] = nothing;
     end
+
     distances[start.id] = 0.0;
 
     # main loop -
@@ -107,7 +108,6 @@ function _search(graph::T, start::MyGraphNodeModel, algorithm::BellmanFordAlgori
         end
     end
 
-    # check fo
     return distances, previous;
 end
 
@@ -133,13 +133,38 @@ function _search(graph::T, start::MyGraphNodeModel, algorithm::ModifiedBellmanFo
     nodes = graph.nodes;
     number_of_nodes = length(nodes);
     
-    # TODO: implement this function
-    throw("ModifiedBellmanFordAlgorithm not implemented");
+    queue = PriorityQueue{Int64, Float64}(); # exported from DataStructures.jl
+    
+        # set distances and previous -
+        distances[start.id] = 0.0; # distance from start to start is zero
+        for (k, _) ∈ graph.nodes # what is this?
+            if k != start.id
+                distances[k] = Inf;
+                previous[k] = nothing;
+            end
+            enqueue!(queue, k, distances[k]); # add nodes to the queue
+        end
+    
+        # main loop -
+        while !isempty(queue) # process nodes in the queue until it is empty (!isempty(queue) is the same as isempty(queue) == false)
+            u = dequeue!(queue);
+            mychildren = children(graph, graph.nodes[u]);
+    
+            for w ∈ mychildren # iterate over the children set of the current node
+                alt = distances[u] + weight(graph, u, w); # distance to u so far + weight of edge from u to w
+                if alt < distances[w] # Wow! the distance to w is less than the current best distance to w
+                    distances[w] = alt;
+                    previous[w] = u;
+                    queue[w] = alt;
+                end
+            end
+        end
+    
+        # return -
+        return distances, previous;
+    end
 
-    # return -
-    return distances, previous;
-end
-
+    # add capacity constraints 
 
 # ------ PUBLIC METHODS BELOW HERE -------------------------------------------------------------------------------- #
 """

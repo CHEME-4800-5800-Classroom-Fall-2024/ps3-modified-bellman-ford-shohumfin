@@ -15,6 +15,23 @@ function _build(edgemodel::Type{MyGraphEdgeModel}, parts::Array{String,1}, id::I
     return model
 end
 
+function _build(nodemodel::Type{MyGraphNodeModel}, capacity::Union{Nothing,Tuple{Int64, Int64}}, id::Int64)::MyGraphNodeModel
+    
+    # initialize -
+    model = nodemodel(); # build an empty node model
+    
+    # populate -
+    model.id = id;
+    # model.source = parse(Int64, capacity[1]);
+    # model.target = parse(Int64, capacity[2]);
+    # model.cost = parse(Float64, capacity[3]);
+    # model.lower_bound_capacity = parse(Float64, capacity[4]);
+    # model.upper_bound_capacity = parse(Float64, capacity[5]);
+
+    # return -
+    return model
+end
+
 # --- PUBLIC METHODS BELOW HERE ----------------------------------------------------------------------------------- #
 """
     build(model::Type{T}, parts::Array{String,1}, id::Int64) where T <: MyGraphEdgeModel
@@ -40,7 +57,7 @@ function build(model::Type{T}, edgemodels::Dict{Int64, MyGraphEdgeModel}) where 
     # build the nodes models with the id's
     [nodes[id] = MyGraphNodeModel(id, nothing) for id ∈ list_of_node_ids];
     # --------------------------------------------------------------------------- #
-    
+
     # -- DO STUFF WITH EDGES ---------------------------------------------------- #
     # build the edges dictionary (source, target) -> (cost, lower_bound_capacity, upper_bound_capacity
     for (_, v) ∈ edgemodels
@@ -49,6 +66,7 @@ function build(model::Type{T}, edgemodels::Dict{Int64, MyGraphEdgeModel}) where 
         edges[(source_index, target_index)] = (v.cost, v.lower_bound_capacity, v.upper_bound_capacity);
     end
 
+    
     # build the inverse edge dictionary edgeid -> (source, target)
     n = length(nodes);
     edgecounter = 1;
@@ -90,4 +108,5 @@ function build(model::Type{T}, edgemodels::Dict{Int64, MyGraphEdgeModel}) where 
     # return -
     return graphmodel;
 end
+
 # --- PUBLIC METHODS ABOVE HERE ----------------------------------------------------------------------------------- #
