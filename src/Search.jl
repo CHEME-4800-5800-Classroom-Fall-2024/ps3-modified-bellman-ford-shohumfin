@@ -1,3 +1,4 @@
+# Updated
 
 """
     function _search(graph::T, start::MyGraphNodeModel, algorithm::DikjstraAlgorithm) where T <: MyAbstractGraphModel
@@ -21,6 +22,7 @@ function _search(graph::T, start::MyGraphNodeModel, algorithm::DikjstraAlgorithm
 
     # set distances and previous -
     distances[start.id] = 0.0; # distance from start to start is zero
+    
     for (k, _) ∈ graph.nodes # what is this?
         if k != start.id
             distances[k] = Inf;
@@ -74,6 +76,7 @@ function _search(graph::T, start::MyGraphNodeModel, algorithm::BellmanFordAlgori
         distances[node.id] = Inf;
         previous[node.id] = nothing;
     end
+
     distances[start.id] = 0.0;
 
     # main loop -
@@ -107,7 +110,6 @@ function _search(graph::T, start::MyGraphNodeModel, algorithm::BellmanFordAlgori
         end
     end
 
-    # check fo
     return distances, previous;
 end
 
@@ -133,13 +135,40 @@ function _search(graph::T, start::MyGraphNodeModel, algorithm::ModifiedBellmanFo
     nodes = graph.nodes;
     number_of_nodes = length(nodes);
     
-    # TODO: implement this function
-    throw("ModifiedBellmanFordAlgorithm not implemented");
+    # main loop -
+    counter = 1;
+    while counter < (number_of_nodes - 1)
+        
+        for (k, _) ∈ graph.edges
 
+            u = k[1];
+            v = k[2];
+
+            alt = distances[u] + weight(graph, u, v);
+            if alt < distances[v]
+            distances[v] = alt;
+            previous[v] = u;
+            end
+        end
+        # increment counter -
+        counter += 1;
+    end
+    
+    # check for negative cycles (as above)
+    for (k, _) ∈ graph.edges
+  
+        u = k[1];
+        v = k[2];
+
+        if distances[u] + weight(graph, u, v) < distances[v]
+            throw(ArgumentError("The graph contains a negative cycle"));
+        end
+    end
     # return -
     return distances, previous;
 end
 
+    # add capacity constraints 
 
 # ------ PUBLIC METHODS BELOW HERE -------------------------------------------------------------------------------- #
 """

@@ -64,9 +64,38 @@ function readnodecapacityfile(filepath::String; comment::Char='#',
 
     # initialize
     capacities = Dict{Int64,Tuple{Int64,Int64}}()
-    
+    linecounter2 = 0;
+
     # TODO: implement this function
-    throw("The readnodecapacityfile function is not implemented yet.");
+        # main -
+        open(filepath, "r") do file # open a stream to the file
+            for line ∈ eachline(file) # process each line in a file, one at a time
+                
+                # check: do we have comments?
+                if (contains(line, comment) == true) || (isempty(line) == true)
+                    continue; # skip this line, and move to the next one
+                end
+                
+                # split the line around the delimiter -
+                parts = split(line, delim) .|> String
+                if (length(parts) != 3)
+                    push!(parts, "1.0"); # add a default weight, if we need to
+                end
+
+                # create fields of correct type -
+                id = parts[1] |> x-> parse(Int,x);
+                indeg = parts[2] |> x-> parse(Int,x);
+                outdeg = parts[3] |> x-> parse(Int,x);
+
+                degree_tuple = (indeg, outdeg);
+
+                # build the capacity model -
+                capacities[id] = degree_tuple;
+    
+                # update the line counter -
+                linecounter2 += 1;
+            end
+        end
 
     # return -
     return capacities;

@@ -1,3 +1,5 @@
+# Updated
+
 function _build(edgemodel::Type{MyGraphEdgeModel}, parts::Array{String,1}, id::Int64)::MyGraphEdgeModel
     
     # initialize -
@@ -10,6 +12,18 @@ function _build(edgemodel::Type{MyGraphEdgeModel}, parts::Array{String,1}, id::I
     model.cost = parse(Float64, parts[3]);
     model.lower_bound_capacity = parse(Float64, parts[4]);
     model.upper_bound_capacity = parse(Float64, parts[5]);
+
+    # return -
+    return model
+end
+
+function _build(nodemodel::Type{MyGraphNodeModel}, capacity::Union{Nothing,Tuple{Int64, Int64}}, id::Int64)::MyGraphNodeModel
+    
+    # initialize -
+    model = nodemodel(); # build an empty node model
+    
+    # populate -
+    model.id = id;
 
     # return -
     return model
@@ -38,9 +52,15 @@ function build(model::Type{T}, edgemodels::Dict{Int64, MyGraphEdgeModel}) where 
     list_of_node_ids = tmp_node_ids |> collect |> sort;
 
     # build the nodes models with the id's
-    [nodes[id] = MyGraphNodeModel(id, nothing) for id ∈ list_of_node_ids];
+    # [nodes[id] = MyGraphNodeModel(id, nothing) for id ∈ list_of_node_ids];
+    # Create nodes and assign nodes and node IDs 
+    for id ∈ list_of_node_ids
+        node = MyGraphNodeModel();
+        node.id = id;
+        nodes[id] = node;
+    end
     # --------------------------------------------------------------------------- #
-    
+
     # -- DO STUFF WITH EDGES ---------------------------------------------------- #
     # build the edges dictionary (source, target) -> (cost, lower_bound_capacity, upper_bound_capacity
     for (_, v) ∈ edgemodels
@@ -49,6 +69,7 @@ function build(model::Type{T}, edgemodels::Dict{Int64, MyGraphEdgeModel}) where 
         edges[(source_index, target_index)] = (v.cost, v.lower_bound_capacity, v.upper_bound_capacity);
     end
 
+    
     # build the inverse edge dictionary edgeid -> (source, target)
     n = length(nodes);
     edgecounter = 1;
@@ -85,8 +106,10 @@ function build(model::Type{T}, edgemodels::Dict{Int64, MyGraphEdgeModel}) where 
     graphmodel.edgesinverse = edgesinverse;
     graphmodel.children = children;
     graphmodel.A = A;
+   #  will add stuff here
 
     # return -
     return graphmodel;
 end
+
 # --- PUBLIC METHODS ABOVE HERE ----------------------------------------------------------------------------------- #

@@ -1,4 +1,6 @@
-# setup paths -
+# Updated 
+
+# setup paths - 
 const _ROOT = @__DIR__
 const _PATH_TO_SRC = joinpath(_ROOT, "src")
 const _PATH_TO_SOLN = joinpath(_ROOT, "solutions")
