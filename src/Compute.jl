@@ -1,3 +1,4 @@
+# Updated
 function _children(edges::Dict{Tuple{Int, Int}, Tuple{Float64, Float64, Float64}}, id::Int64)::Set{Int64}
     
     # initialize -
@@ -12,11 +13,6 @@ function _children(edges::Dict{Tuple{Int, Int}, Tuple{Float64, Float64, Float64}
 
     # return -
     return childrenset;
-end
-
-# ADD DESCRIPTOR
-function children(graph::T, node::MyGraphNodeModel)::Set{Int64} where T <: MyAbstractGraphModel
-    return graph.children[node.id];
 end
 
 function _convert(graphmodel::T) where T <: MyAbstractGraphModel
@@ -48,7 +44,6 @@ This function returns the children of a node in a graph model.
 function children(graph::T, node::MyGraphNodeModel)::Set{Int64} where T <: MyAbstractGraphModel
     return graph.children[node.id];
 end
-
 
 """
     function weight(graph::T, source::Int64, target::Int64) -> Float64 where T <: MyAbstractGraphModel

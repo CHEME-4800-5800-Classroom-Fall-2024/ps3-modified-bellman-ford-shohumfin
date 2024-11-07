@@ -65,7 +65,6 @@ function readnodecapacityfile(filepath::String; comment::Char='#',
     capacities = Dict{Int64,Tuple{Int64,Int64}}()
     linecounter2 = 0;
         
-
         # main -
         open(filepath, "r") do file # open a stream to the file
             for line ∈ eachline(file) # process each line in a file, one at a time
