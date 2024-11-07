@@ -1,5 +1,5 @@
 """
-    function readedgesfile(filepath::String; comment::Char='#', delim::Char=',') -> Dict{Int64, MyGraphNodeModel}
+    function readnodesfile(filepath::String; comment::Char='#', delim::Char=',') -> Dict{Int64, MyGraphNodeModel}
 
 The function reads a file containing edge list information and returns a dictionary of node models.
 
@@ -45,6 +45,7 @@ function readedgesfile(filepath::String; comment::Char='#',
     return edges;
 end
 
+
 """
     function readnodecapacityfile(filepath::String; comment::Char='#', delim::Char=',') -> Dict{Int64, Tuple{Int64, Int64}}
 
@@ -64,7 +65,8 @@ function readnodecapacityfile(filepath::String; comment::Char='#',
     # initialize
     capacities = Dict{Int64,Tuple{Int64,Int64}}()
     linecounter2 = 0;
-        
+
+    # TODO: implement this function
         # main -
         open(filepath, "r") do file # open a stream to the file
             for line ∈ eachline(file) # process each line in a file, one at a time
@@ -79,15 +81,22 @@ function readnodecapacityfile(filepath::String; comment::Char='#',
                 if (length(parts) != 3)
                     push!(parts, "1.0"); # add a default weight, if we need to
                 end
-    
-                # build the capacity model -
-                capacities[id] = _build(MyGraphNodeModel, parts, id);
 
+                # create fields of correct type -
+                id = parts[1] |> x-> parse(Int,x);
+                indeg = parts[2] |> x-> parse(Int,x);
+                outdeg = parts[3] |> x-> parse(Int,x);
+
+                degree_tuple = (indeg, outdeg);
+
+                # build the capacity model -
+                capacities[id] = degree_tuple;
     
                 # update the line counter -
                 linecounter2 += 1;
             end
         end
+
     # return -
     return capacities;
 end

@@ -1,4 +1,5 @@
 # Updated
+
 function _build(edgemodel::Type{MyGraphEdgeModel}, parts::Array{String,1}, id::Int64)::MyGraphEdgeModel
     
     # initialize -

@@ -1,4 +1,5 @@
 # Updated
+
 """
     function _search(graph::T, start::MyGraphNodeModel, algorithm::DikjstraAlgorithm) where T <: MyAbstractGraphModel
 
@@ -21,6 +22,7 @@ function _search(graph::T, start::MyGraphNodeModel, algorithm::DikjstraAlgorithm
 
     # set distances and previous -
     distances[start.id] = 0.0; # distance from start to start is zero
+    
     for (k, _) ∈ graph.nodes # what is this?
         if k != start.id
             distances[k] = Inf;
