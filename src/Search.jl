@@ -1,3 +1,4 @@
+# Updated
 
 """
     function _search(graph::T, start::MyGraphNodeModel, algorithm::DikjstraAlgorithm) where T <: MyAbstractGraphModel
@@ -21,6 +22,7 @@ function _search(graph::T, start::MyGraphNodeModel, algorithm::DikjstraAlgorithm
 
     # set distances and previous -
     distances[start.id] = 0.0; # distance from start to start is zero
+    
     for (k, _) ∈ graph.nodes # what is this?
         if k != start.id
             distances[k] = Inf;
@@ -74,6 +76,7 @@ function _search(graph::T, start::MyGraphNodeModel, algorithm::BellmanFordAlgori
         distances[node.id] = Inf;
         previous[node.id] = nothing;
     end
+
     distances[start.id] = 0.0;
 
     # main loop -
@@ -107,7 +110,6 @@ function _search(graph::T, start::MyGraphNodeModel, algorithm::BellmanFordAlgori
         end
     end
 
-    # check fo
     return distances, previous;
 end
 
@@ -132,14 +134,9 @@ function _search(graph::T, start::MyGraphNodeModel, algorithm::ModifiedBellmanFo
     previous = Dict{Int64, Union{Nothing,Int64}}();
     nodes = graph.nodes;
     number_of_nodes = length(nodes);
-    
-    # TODO: implement this function
-    throw("ModifiedBellmanFordAlgorithm not implemented");
 
-    # return -
-    return distances, previous;
+    return _search(graph, start, BellmanFordAlgorithm());
 end
-
 
 # ------ PUBLIC METHODS BELOW HERE -------------------------------------------------------------------------------- #
 """
